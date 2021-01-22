@@ -1,0 +1,9 @@
+Thank You {{ name }} for Registering with System-Student Matching System.
+
+Please find the code necessary to activate your account : {{ code }}
+
+You will be logged in after confirmation of your email.
+
+Thank you,
+
+System-Student Matching System

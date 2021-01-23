@@ -8,7 +8,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 #     department_name= models.CharField(max_length= 100)
 #     school= models.CharField(max_length= 300)
 #
-#     def __str__(self):
 #         return self.department_name
 
 # Lecturer model
@@ -25,3 +24,11 @@ class Lecturer(models.Model):
     def get_lecturer_name(self):
         full_name= self.user.first_name + " " + self.user.last_name
         return self.full_name
+
+
+class LecturerProfilePicture(models.Model):
+    lecturer= models.OneToOneField('accounts.Lecturer', on_delete= models.CASCADE)
+    picture= models.ImageField(upload_to= 'profile_pics/', blank= True)
+
+    def __str__(self):
+        return self.lecturer.user.username

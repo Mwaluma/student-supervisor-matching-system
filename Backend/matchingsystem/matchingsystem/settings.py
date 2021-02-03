@@ -16,6 +16,8 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR= os.path.join(BASE_DIR, 'accounts/templates')
+STATIC_DIR= os.path.join(BASE_DIR, 'accounts/static')
+MEDIA_DIR= os.path.join(BASE_DIR, 'accounts/media')
 
 
 # Quick-start development settings - unsuitable for production
@@ -99,6 +101,12 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
+PASSWORD_HASHERS= [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -134,13 +142,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS= [
+    STATIC_DIR,
+]
+
+MEDIA_ROOT= MEDIA_DIR
+MEDIA_URL= '/media/'
 
 LOGIN_URL= '/accounts/login/'
 
 
 # Email sending settings
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'mkaziapp@gmail.com'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'mkaziapp@gmail.com'
+# EMAIL_HOST_PASSWORD = 'play_upP1mp'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+MAILER_EMAIL_BACKEND = EMAIL_BACKEND
+EMAIL_HOST = 'smpt.gmail.com'
 EMAIL_HOST_PASSWORD = 'play_upP1mp'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'mcoastk@gmail.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

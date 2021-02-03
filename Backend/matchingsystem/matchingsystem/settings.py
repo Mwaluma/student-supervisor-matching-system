@@ -153,8 +153,17 @@ LOGIN_URL= '/accounts/login/'
 
 
 # Email sending settings
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'mkaziapp@gmail.com'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'mkaziapp@gmail.com'
+# EMAIL_HOST_PASSWORD = 'play_upP1mp'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+MAILER_EMAIL_BACKEND = EMAIL_BACKEND
+EMAIL_HOST = 'smpt.gmail.com'
 EMAIL_HOST_PASSWORD = 'play_upP1mp'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'mcoastk@gmail.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

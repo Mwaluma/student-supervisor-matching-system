@@ -2,12 +2,15 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Lecturer, LecturerProfilePicture
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
-class UserForm(forms.ModelForm):
-    password= forms.CharField(widget= forms.PasswordInput())
+class UserForm(UserCreationForm):
+    #password= forms.CharField(widget= forms.PasswordInput())
+    #confirm_password= forms.CharField(widget= forms.PasswordInput())
+    email = forms.EmailField(max_length=100, help_text='Required')
     class Meta:
         model= User
-        fields= ['first_name', 'last_name', 'email', 'password']
+        fields= ['first_name', 'last_name', 'email', 'password1', 'password2']
 
 class LecturerForm(forms.ModelForm):
     class Meta:

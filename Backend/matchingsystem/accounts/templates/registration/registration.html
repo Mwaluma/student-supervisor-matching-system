@@ -1,17 +1,82 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>SS Matching System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/sign.css'%}">
+  </head>
 
-  {% block body_block %}
-  <div class="container">
-    <h1>Please Fill in the Form</h1>
-    <form enctype="multipart/form-data" class="" method="post">
-      {% csrf_token %}
-      {{ user_form.as_p }}
-      {{ lecturer_form.as_p }}
-      {{ profile_picture_form.as_p }}
-      {{ user_default_form.as_p}}
-      <input type="submit" name="" value="Register">
+  <body>
+    <h2>Student-Supervisor Matching System</h2>
+    <!-- TESTER CODE -->
+    <!-- <div class="tester">
+      <p>...</p>
+      <pre class = "display-wrapper">
+        <code class="display"></code>
+      </pre>
+    </div> -->
 
-    </form>
-  </div>
+    <!-- COMPLETE FORM -->
+    <div class="container" id="container">
+      <!-- SIGN UP FORM -->
+    	<div class="form-container sign-up-container">
+    		<form action="" method= 'post'>
+          {% csrf_token %}
+    			<h1>Create Account</h1>
+    			{{user_form.first_name}}
+          {{user_form.last_name}}
+    			{{user_form.email}}
+          {{user_form.password1}}
+          {{user_form.password2}}
+          {{lecturer_form.phone_number}}
+          {{lecturer_form.office_address}}
+          {{profile_picture_form.picture}}
 
-  {% endblock %}
+          <button type="submit" name="signUp">Sign Up</button>
+    		</form>
+    	</div>
+
+      {% if user_form.errors %}
+        user_form.errors
+      {% elif lecturer_form.errors %}
+        lecturer_form.errors
+      {% elif profile_picture_form.errors %}
+        profile_picture_form.errors
+
+      {% endif %}
+
+      <!-- SIGN/LOG IN FORM -->
+      <div class="form-container sign-in-container">
+    		<form action="#">
+    			<h1>Sign in</h1>
+    			<input type="text" placeholder="Username" required/>
+    			<input type="password" placeholder="Password" required/>
+    			<a href="#">Forgot your password?</a>
+          <button type="submit" name="signIn">Sign In</button>
+    		</form>
+    	</div>
+
+      <!-- FANCY ANIMATION -->
+    	<div class="overlay-container">
+    		<div class="overlay">
+    			<div class="overlay-panel overlay-left">
+    				<h1>Welcome Back!</h1>
+    				<p>To be connected please login with your personal info</p>
+    				<button class="ghost" id="signIn">Sign In</button>
+    			</div>
+    			<div class="overlay-panel overlay-right">
+    				<h1>New here?</h1>
+            <p>Create an account to be part of us</p>
+    				<button class="ghost" id="signUp">Sign Up</button>
+    			</div>
+    		</div>
+    	</div>
+
+    </div>
+  </body>
+
+  <script src="{% static "js/sign.js"%}" charset="utf-8"></script>
+
+</html>

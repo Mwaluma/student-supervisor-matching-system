@@ -21,3 +21,12 @@ class LecturerProfilePictureForm(forms.ModelForm):
     class Meta:
         model= LecturerProfilePicture
         fields= ['picture']
+
+########################################################################
+
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model= User
+        fields= ['username', 'email', 'password1', 'password2']
+
+############################################################################

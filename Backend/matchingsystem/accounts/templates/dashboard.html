@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+
+  {% block body_block  %}
+    Hello, {{ user.username|default:'Guest' }}!
+  {% endblock %}

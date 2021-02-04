@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -10,7 +10,60 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes
+from django.contrib.auth.models import User
+from django.contrib import messages
 
+##################################################################################
+
+from django.contrib.auth.forms import UserCreationForm
+from .forms import CreateUserForm
+
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
+def registerPage(request):
+    if request.user.is_authenticated:
+        return redirect('accounts/dashboard')
+    else:
+
+        form= CreateUserForm()
+
+        if request.method == 'POST':
+            form= CreateUserForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+                user= form.cleaned_data.get('username')
+                messages.success(request, 'Account was created for ' + user)
+                return redirect('accounts:login')
+
+        context= {'form': form}
+        return render(request, 'registration/register.html', context)
+
+def loginPage(request):
+
+    if request.method == 'POST':
+        username= request.POST.get('username')
+        password= request.POST.get('password')
+
+        user= authenticate(request, username= username, password= password)
+
+        if user is not None:
+            login(request, user)
+            print(user)
+            return redirect('accounts:dashboard')
+        else:
+            messages.info(request, 'Username or Password is incorrect')
+
+    context= {}
+    return render(request, 'registration/login.html', context )
+
+def logoutUser(request):
+    logout(request)
+    return redirect('accounts:login')
+
+
+###############################################################################
 
 # Create your views here.
 def user_login(request):
@@ -18,22 +71,28 @@ def user_login(request):
         username= request.POST.get('username')
         password= request.POST.get('password')
 
-        user= authenticate(username= username, password= password)
+        #Checks for user and returns the user object
+        user= authenticate(request, username= username, password= password)
 
-        if user:
-            #Check if user is activate
+
+        if user is not None:
+            #Check if user is active
             if user.is_active:
+                #Attaches the user to the current session
                 login(request, user)
-                return HttpResponseRedirect(reverse('index'))
+                return redirect('accounts:dashboard')
 
             else:
-                return HttpResponse('ACCOUNT NOT ACTIVE')
+                #Display user not active
+                messages.info(request, 'USER IS NOT ACTIVE')
 
         else:
-            return HttpResponse('Invalid login details')
+            #Display failed authentication
+            messages.info(request, 'Username or Password is incorrect')
 
-    else:
-        return render(request, 'login.html', {})
+
+    context= {}
+    return render(request, 'registration/logintest.html', context)
 
 
 def lecturer_register(request):
@@ -46,7 +105,6 @@ def lecturer_register(request):
 
         #Check if the fields are valid
         if user_form.is_valid() and lecturer_form.is_valid() and profile_picture_form.is_valid():
-            #Check if user exists
 
             user= user_form.save(commit=False)
             user.username= user.email
@@ -63,38 +121,30 @@ def lecturer_register(request):
             profile.lecturer= lecturer
             profile.save()
 
-            current_site = get_current_site(request)
-            mail_subject = 'Activate your account.'
-            message = render_to_string('accounts/templates/registration/acc_activate_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': default_token_generator.make_token(user),
-            })
-            to_email = form.cleaned_data.get('email')
-            email = EmailMessage(
-                mail_subject, message, to=[to_email]
-            )
-            email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            user= user_form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' + user)
 
-                #return HttpResponseRedirect(reverse('accounts:login'))
-        else:
-            # if user_form.is_valid():
-            #     return HttpResponse('{}'.format(user_form.errors))
-            # elif lecturer_form.is_valid():
-            #     return HttpResponse('{}'.format(lecturer_form.errors))
-            # else:
-            #     return HttpResponse('{}'.format(profile_picture_form.errors))
-            #
-            print(user_form.errors, lecturer_form.errors, profile_picture_form.errors)
-            return HttpResponse("Something is wrong with the validation")
 
-    else:
-        user_form= forms.UserForm()
-        lecturer_form= forms.LecturerForm()
-        profile_picture_form= forms.LecturerProfilePictureForm()
-        return render(request, 'registration/registration.html', {'user_form': user_form, 'lecturer_form': lecturer_form, 'profile_picture_form': profile_picture_form} )
+            # current_site = get_current_site(request)
+            # mail_subject = 'Activate your account.'
+            # message = render_to_string('registration/acc_activate_email.html', {
+            #     'user': user,
+            #     'domain': current_site.domain,
+            #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            #     'token': default_token_generator.make_token(user),
+            # })
+            # to_email = form.cleaned_data.get('email')
+            # email = EmailMessage(
+            #     mail_subject, message, to=[to_email]
+            # )
+            # email.send()
+            return redirect('accounts:login')
+
+    #Create forms to be rendered
+    user_form= forms.UserForm()
+    lecturer_form= forms.LecturerForm()
+    profile_picture_form= forms.LecturerProfilePictureForm()
+    return render(request, 'registration/registration.html', {'user_form': user_form, 'lecturer_form': lecturer_form, 'profile_picture_form': profile_picture_form} )
 
 
 def activate(request, uidb64, token):
@@ -109,3 +159,6 @@ def activate(request, uidb64, token):
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
+
+def dashboard(request):
+    return render(request, "dashboard.html")

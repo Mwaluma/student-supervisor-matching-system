@@ -8,7 +8,7 @@ app_name= 'accounts'
 
 urlpatterns= [
     #path('login/', views.user_login, name= 'user_login'),
-    path('login/', views.loginPage, name='login'),
+    path('login/', views.user_login, name='login'),
     path('logout/', views.logoutUser, name='logout'),
     path('register/', views.lecturer_register, name= 'register'),
     path('activate/<uidb64>/<token>/',views.activate, name='activate'),

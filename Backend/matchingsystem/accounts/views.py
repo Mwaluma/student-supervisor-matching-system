@@ -13,6 +13,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Lecturer, LecturerProfilePicture
+from extraction.forms import DocumentForm
 
 ##################################################################################
 
@@ -41,27 +42,9 @@ def registerPage(request):
         context= {'form': form}
         return render(request, 'registration/register.html', context)
 
-def loginPage(request):
 
-    if request.method == 'POST':
-        username= request.POST.get('username')
-        password= request.POST.get('password')
 
-        user= authenticate(request, username= username, password= password)
 
-        if user is not None:
-            login(request, user)
-            print(user)
-            return redirect('accounts:dashboard')
-        else:
-            messages.info(request, 'Username or Password is incorrect')
-
-    context= {}
-    return render(request, 'registration/login.html', context )
-
-def logoutUser(request):
-    logout(request)
-    return redirect('accounts:login')
 
 
 ###############################################################################
@@ -93,7 +76,11 @@ def user_login(request):
 
 
     context= {}
-    return render(request, 'registration/logintest.html', context)
+    return render(request, 'registration/login.html', context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('accounts:login')
 
 
 def lecturer_register(request):
@@ -109,7 +96,7 @@ def lecturer_register(request):
 
             user= user_form.save(commit=False)
             user.username= user.email
-            user.is_active= False
+            user.is_active= True
             user.save()
             #user.set_password(user.password)
             #user.save()
@@ -122,8 +109,9 @@ def lecturer_register(request):
             profile.lecturer= lecturer
             profile.save()
 
-            user= user_form.cleaned_data.get('username')
-            messages.success(request, 'Account was created for ' + user)
+            #user= user_form.cleaned_data.get('username')
+            #print(user)
+            messages.success(request, 'Account was created for ' + user.username)
 
 
             # current_site = get_current_site(request)
@@ -162,7 +150,10 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 
 def dashboard(request):
-    return render(request, "dashboard.html")
+    #Upload document form
+    doc_form = DocumentForm()
+    context= {'doc_form': doc_form}
+    return render(request, "dashboard.html", context)
 
 
 def update_profile(request, pk):
@@ -188,9 +179,10 @@ def update_profile(request, pk):
             user_form.save()
             lecturer_form.save()
             return redirect("accounts:dashboard")
+
     context= {'user_form': user_form, 'lecturer_form': lecturer_form}
 
-    return render(request, 'update_profile.html', context)
+    return render(request, 'dashboard.html', context)
 
 
 def delete_something(request):

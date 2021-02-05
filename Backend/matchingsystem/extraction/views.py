@@ -25,9 +25,6 @@ def upload_document(request):
     '''
 
     if request.method == 'POST':
-        uploaded_file= request.FILES["doc"]
-        print(uploaded_file)
-
 
         #Obtain the file sent
         form = DocumentForm(request.POST, request.FILES)
@@ -40,14 +37,13 @@ def upload_document(request):
 
             #Get user
             user= request.user
-            print(user)
             form.author= Lecturer.objects.get(user=user)
             form.save()
             print("Saved successfully")
             return redirect("extraction:upload")
-        #return HttpResponse("Post executing")
-    else:
-        form = DocumentForm()
-        return render(request, 'upload_document.html', {
-        'form': form
-    })
+        # return HttpResponse("Post executing")
+    # else:
+    #     form = DocumentForm()
+    #     return render(request, 'upload_document.html', {
+    #     'form': form
+    # })

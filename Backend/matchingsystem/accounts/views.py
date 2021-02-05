@@ -12,6 +12,7 @@ from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes
 from django.contrib.auth.models import User
 from django.contrib import messages
+from .models import Lecturer, LecturerProfilePicture
 
 ##################################################################################
 
@@ -162,3 +163,36 @@ def activate(request, uidb64, token):
 
 def dashboard(request):
     return render(request, "dashboard.html")
+
+
+def update_profile(request, pk):
+    '''
+        Updates Lecturer's details
+    '''
+
+    #Query item from the database
+    user= User.objects.get(id=pk)
+    lecturer= Lecturer.objects.get(user= user)
+
+    #Fill the form with details from the obtained user
+    user_form= forms.UserDetailForm(instance=user)
+    lecturer_form= forms.LecturerForm(instance=lecturer)
+
+    if request.method == 'POST':
+        #Get changes
+        user_form= forms.UserDetailForm(request.POST, instance= user)
+        lecturer_form= forms.LecturerForm(request.POST, instance= lecturer)
+
+        if user_form.is_valid() and lecturer_form.is_valid():
+            #Save updated details to database
+            user_form.save()
+            lecturer_form.save()
+            return redirect("accounts:dashboard")
+    context= {'user_form': user_form, 'lecturer_form': lecturer_form}
+
+    return render(request, 'update_profile.html', context)
+
+
+def delete_something(request):
+    context= {}
+    return render(request, 'delete.html', context)

@@ -12,7 +12,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 # Lecturer model
 class Lecturer(models.Model):
-    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name= "lecturer")
     phone_number = PhoneNumberField(null=False, blank=False, unique= True)
     office_address= models.CharField(max_length=254)
     #department= models.ForeignKey('accounts.Departments', on_delete=models.CASCADE)

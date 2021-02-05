@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+  <p>Upload</p>
+  <form  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="document" value="">
+    <button type="submit" name="button">Upload file</button>
+
+  </form>
+  {% if url %}
+    <p>Uploaded file: <a href="{{ url }}">{{url}}</a></p>
+  {% endif %}
+{% endblock %}

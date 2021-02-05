@@ -18,6 +18,7 @@ from django.urls import path, include
 
 extra_patterns= [
     path('', include('accounts.urls')),
+    path('', include('extraction.urls')),
 ]
 
 urlpatterns = [

@@ -1,0 +1,9 @@
+{% extend {'base.html'} %}
+  {% block body_block %}
+    <p>  Are you sure you want to delete "{{item}}"? </p>
+
+    <form class="" action="" method="post">
+      <a href="{% url 'accounts:dashboard'%}">Cancel</a>
+      <input type="submit" name="Confirm" value="">
+    </form>
+  {% endblock %}

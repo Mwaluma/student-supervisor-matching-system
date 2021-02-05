@@ -2,4 +2,6 @@
 
   {% block body_block  %}
     Hello, {{ user.username|default:'Guest' }}!
+
+    <button type="button" name="button"><a href="{% url "accounts:update_profile" request.user.id %}">Update profile</a></button>
   {% endblock %}

@@ -1,5 +1,39 @@
 {% extends 'base.html' %}
 
-  {% block body_block  %}
-    Hello, {{ user.username|default:'Guest' }}!
-  {% endblock %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>SS Matching System</title>
+    <link rel="stylesheet" href="{% static 'css/dash.css'%}">
+  </head>
+  <body>
+
+      {% block body_block  %}
+
+      <nav>
+        <a class="navbar-brand" href="dashboard.html" target="_blank">Student Supervisor Matching System</a>
+      </nav>
+
+        <div class="container">
+          <div class="row">
+            <div class="column">
+            <h1>Hello, {{ user.username|default:'Guest' }}!</h1>
+            <p>First Name: {{user_form.first_name}}</p>
+            <p>Last Name: {{user_form.last_name}}</p>
+            <p>Email address: {{user_form.email}}</p>
+            <p>Phone number: {{user_form.phone_number}}</p>
+            <p>Office address: {{user_form.office_address}}</p>
+            </div>
+            <div class="column">
+              <form action="#">
+                <input type="file" id="myFile" name="filename">
+                <input type="submit">
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endblock %}
+  </body>
+</html>

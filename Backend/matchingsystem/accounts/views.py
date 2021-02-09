@@ -188,3 +188,8 @@ def update_profile(request, pk):
 def delete_something(request):
     context= {}
     return render(request, 'delete.html', context)
+
+
+def home(request):
+
+    return render(request, 'student.html')

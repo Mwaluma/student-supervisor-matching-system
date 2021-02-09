@@ -4,6 +4,13 @@ from django.core.files.storage import FileSystemStorage
 from .forms import DocumentForm
 from django.http import HttpResponse, HttpResponseRedirect
 from accounts.models import Lecturer
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
+from matchingsystem import settings
+from extraction.packages.extract_text import extract_text_from_document
+from extraction.packages.rake import Rake
+from extraction.packages.extract_text import extract_tf
+from collections import Counter, defaultdict
 
 # Create your views here.
 def upload(request):
@@ -18,7 +25,7 @@ def upload(request):
 
     return render(request, 'upload.html', context)
 
-
+@csrf_exempt
 def upload_document(request):
     '''
         Uploads documents
@@ -28,7 +35,9 @@ def upload_document(request):
 
         #Obtain the file sent
         form = DocumentForm(request.POST, request.FILES)
-        print(form)
+        print(settings.MEDIA_DIR)
+
+        #Document load
 
         #Check if all details are valid
         if form.is_valid():
@@ -39,9 +48,53 @@ def upload_document(request):
             user= request.user
             form.author= Lecturer.objects.get(user=user)
             form.save()
-            print("Saved successfully")
-            return redirect("extraction:upload")
-        # return HttpResponse("Post executing")
+            messages.success(request, 'File has been uploaded successfuly')
+
+
+            #Get the url
+            url= "/".join([settings.MEDIA_DIR,str(form.doc)])
+
+            #Extract text from document
+            text= extract_text_from_document(url=url).lower()
+
+            #Extract keywords from the document
+            r= Rake()
+            r.extract_keywords_from_text(text)
+            keywords= r.get_ranked_phrases()
+            #Get keywords as a dictionary {'keyword': tf}
+            keywords= extract_tf(keywords,text)
+
+            #Create postlist
+            for term,tf in keywords.items():
+                #Create postlist
+                keywords[term]= [request.user.id,tf]
+
+            #main index
+            main_index= defaultdict(list)
+            #Append keyword to main index
+            for term,value in keywords.items():
+                main_index[term].append(value)
+
+            #Write to txt
+            f=open("/".join([settings.MEDIA_DIR,'indexfile.txt']), 'w')
+            for term,value in main_index.items():
+                postinglist=[]
+
+                for p in value:
+                    lecID=p[0]
+                    tf=p[1]
+                    postinglist.append(','.join([str(lecID), str(tf)]))
+
+                string= ''.join((term,'|',';'.join(postinglist)))
+
+                #write to file
+
+                f.write(f"{string}\n")
+
+            f.close()
+
+            return redirect("accounts:dashboard")
+        #return HttpResponse("Post executing")
     # else:
     #     form = DocumentForm()
     #     return render(request, 'upload_document.html', {

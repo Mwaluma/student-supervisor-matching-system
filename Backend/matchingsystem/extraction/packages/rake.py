@@ -77,7 +77,7 @@ class Rake(object):
     def extract_keywords_from_sentences(self, sentences):
         """Method to extract keywords from the list of sentences provided.
 
-        :param sentences: Text to extraxt keywords from, provided as a list
+        :param sentences: Text to extract keywords from, provided as a list
                           of strings, where each string is a sentence.
         """
         phrase_list = self._generate_phrases(sentences)

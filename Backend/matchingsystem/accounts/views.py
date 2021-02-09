@@ -191,5 +191,17 @@ def delete_something(request):
 
 
 def home(request):
-
     return render(request, 'student.html')
+
+# def find_match(request):
+#     if request.method == 'POST':
+#         #Get form details
+#         text= request.POST.get('mytextarea')
+# 
+#         #Extract keywords
+#         r= Rake()
+#         r.extract_keywords_from_text(+)
+#
+#         return HttpResponse('Executed')
+#     else:
+#         return HttpResponse('POST DIDNT EXECUTE')

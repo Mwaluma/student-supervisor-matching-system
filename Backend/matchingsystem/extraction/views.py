@@ -60,9 +60,12 @@ def upload_document(request):
             #Extract keywords from the document
             r= Rake()
             r.extract_keywords_from_text(text)
+
             keywords= r.get_ranked_phrases()
+            print(keywords)
             #Get keywords as a dictionary {'keyword': tf}
             keywords= extract_tf(keywords,text)
+
 
             #Create postlist
             for term,tf in keywords.items():
@@ -71,6 +74,23 @@ def upload_document(request):
 
             #main index
             main_index= defaultdict(list)
+
+            #upload index
+            f=open("/".join([settings.MEDIA_DIR,'indexfile.txt']), 'r')
+            for line in f:
+                line=line.rstrip()
+                term,documents= line.split('|')
+                documents= documents.split(';')
+
+                for doc in documents:
+                    postings= doc.split(',')
+                    main_index[term].append(postings)
+
+            f.close()
+
+            #print(main_index)
+
+
             #Append keyword to main index
             for term,value in keywords.items():
                 main_index[term].append(value)

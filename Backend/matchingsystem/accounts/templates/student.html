@@ -11,13 +11,14 @@
       <h3>Student-Supervisor Matching System</h3>
       <p>Find the best supervisor for your project and/or area <br>of interest with the Student-Supervisor Matching System.</p>
       <div class="textarea">
-        <form action="#">
-        <textarea name="" id="txt" cols="20" rows="5" placeholder="Type here any keywords that describe your project..."></textarea>
-        <div class="upload">
-        <p>Or upload your proposal here</p>
-          <input type="file" id="myFile" name="filename">
-          <input type="submit">
-        </div>
+        <form action="" method='POST'>
+          {% csrf_token %}
+          <textarea name="mytextarea" id="txt" cols="20" rows="5" placeholder="Type here any keywords that describe your project..."></textarea>
+          <div class="upload">
+          <p>Or upload your proposal here</p>
+            <input type="file" id="myFile" name="filename">
+            <input type="submit">
+          </div>
         </form>
       </div>
       <button>Find Match</button>

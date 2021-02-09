@@ -3,7 +3,8 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SS Matching System</title>
     <link rel="stylesheet" href="{% static 'css/student.css'%}">
   </head>
   <body>
@@ -14,14 +15,12 @@
         <form action="" method='POST'>
           {% csrf_token %}
           <textarea name="mytextarea" id="txt" cols="20" rows="5" placeholder="Type here any keywords that describe your project..."></textarea>
-          <div class="upload">
-          <p>Or upload your proposal here</p>
+          <p>Or upload your proposal here (in .txt format)</p>
             <input type="file" id="myFile" name="filename">
-            <input type="submit">
-          </div>
         </form>
       </div>
       <button>Find Match</button>
     </div>
+    <script src="{% static 'js/student.js'%}" charset="utf-8"></script>
   </body>
 </html>

@@ -2,22 +2,22 @@ let input = document.getElementById('myFile');
 let textarea = document.getElementById('txt');
 
 input.addEventListener('change', () => {
-    let files = input.files; 
+  let files = input.files;
 
-    if(files.length == 0) return;
+  if(files.length == 0) return;
 
-    const file = files[0];
+  const file = files[0];
 
-    let reader = new FileReader();
+  let reader = new FileReader();
 
-    reader.onload = (e) => {
-        const file = e.target.result;
-        const lines = file.split(/\r\n|\n/);
-        textarea.value = lines.join('\n');
-    };
+  reader.onload = (e) => {
+    const file = e.target.result;
+    const lines = file.split(/\r\n|\n/);
+    textarea.value = lines.join('\n');
+  };
 
-    reader.onerror = (e) => alert(e.target.error.name);
+  reader.onerror = (e) => alert(e.target.error.name);
 
-    reader.readAsText(file);
+  reader.readAsText(file);
 
 });

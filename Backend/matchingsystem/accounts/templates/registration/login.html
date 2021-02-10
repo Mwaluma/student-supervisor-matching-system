@@ -1,106 +1,106 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>SS Matching System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/sign.css'%}">
-  </head>
+<head>
+  <meta charset="utf-8">
+  <title>SS Matching System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/sign.css'%}">
+</head>
 
-  <body>
-    <h2>Student-Supervisor Matching System</h2>
-    <!-- TESTER CODE -->
-    <!-- <div class="tester">
-      <p>...</p>
-      <pre class = "display-wrapper">
-        <code class="display"></code>
-      </pre>
-    </div> -->
+<body>
+  <h2>Student-Supervisor Matching System</h2>
+  <!-- TESTER CODE -->
+  <!-- <div class="tester">
+  <p>...</p>
+  <pre class = "display-wrapper">
+  <code class="display"></code>
+</pre>
+</div> -->
 
-    <!-- COMPLETE FORM -->
-    <div class="container" id="container">
-      <!-- SIGN UP FORM -->
-    	<div class="form-container sign-up-container">
-    		<form action="" method= 'post'>
-          {% csrf_token %}
-    			<h1>Create Account</h1>
-    			{{user_form.first_name}}
-          {{user_form.last_name}}
-    			{{user_form.email}}
-          {{user_form.password1}}
-          {{user_form.password2}}
-          {{lecturer_form.phone_number}}
-          {{lecturer_form.office_address}}
-          {{profile_picture_form.picture}}
+<!-- COMPLETE FORM -->
+<div class="container" id="container">
+  <!-- SIGN UP FORM -->
+  <div class="form-container sign-up-container">
+    <form action="" method= 'post'>
+      {% csrf_token %}
+      <h1>Create Account</h1>
+      {{user_form.first_name}}
+      {{user_form.last_name}}
+      {{user_form.email}}
+      {{user_form.password1}}
+      {{user_form.password2}}
+      {{lecturer_form.phone_number}}
+      {{lecturer_form.office_address}}
+      {{profile_picture_form.picture}}
 
-          <button type="submit" name="signUp">Sign Up</button>
-    		</form>
-    	</div>
+      <button type="submit" name="signUp">Sign Up</button>
+    </form>
+  </div>
 
-      {% if user_form.errors %}
-        user_form.errors
-      {% elif lecturer_form.errors %}
-        lecturer_form.errors
-      {% elif profile_picture_form.errors %}
-        profile_picture_form.errors
+  {% if user_form.errors %}
+  user_form.errors
+  {% elif lecturer_form.errors %}
+  lecturer_form.errors
+  {% elif profile_picture_form.errors %}
+  profile_picture_form.errors
 
-      {% endif %}
+  {% endif %}
 
-      <!-- SIGN/LOG IN FORM -->
-      <div class="form-container sign-in-container">
-    		<form action="" method='post'>
-          {% csrf_token %}
-    			<h1>Sign in</h1>
-    			<input type="text" name= "username" placeholder="Username" required/>
-    			<input type="password" name= "password" placeholder="Password" required/>
-    			<a href="#">Forgot your password?</a>
-          <button type="submit" name="signIn">Sign In</button>
-          {% for message in messages %}
-            <p>{{message}}</p>
-          {% endfor %}
-    		</form>
+  <!-- SIGN/LOG IN FORM -->
+  <div class="form-container sign-in-container">
+    <form action="" method='post'>
+      {% csrf_token %}
+      <h1>Sign in</h1>
+      <input type="text" name= "username" placeholder="Username" required/>
+      <input type="password" name= "password" placeholder="Password" required/>
+      <!-- <a href="#">Forgot your password?</a> -->
+      <button type="submit" name="signIn">Sign In</button>
+      {% for message in messages %}
+      <p>{{message}}</p>
+      {% endfor %}
+    </form>
 
-    	</div>
+  </div>
 
 
 
-      <!-- FANCY ANIMATION -->
-    	<div class="overlay-container">
-    		<div class="overlay">
-    			<div class="overlay-panel overlay-left">
-    				<h1>Welcome Back!</h1>
-    				<p>To be connected please login with your personal info</p>
-    				<button class="ghost" id="signIn">Sign In</button>
-    			</div>
-    			<div class="overlay-panel overlay-right">
-    				<h1>New here?</h1>
-            <p>Create an account to be part of us</p>
+  <!-- FANCY ANIMATION -->
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-left">
+        <h1>Welcome Back!</h1>
+        <p>To be connected please login with your personal info</p>
+        <button class="ghost" id="signIn">Sign In</button>
+      </div>
+      <div class="overlay-panel overlay-right">
+        <h1>New here?</h1>
+        <p>Create an account to be part of us</p>
 
-    				<button class="ghost" id="signUp"><a href="{% url 'accounts:register'%}">Sign Up</a></button>
-    			</div>
-    		</div>
-    	</div>
-
+        <button class="ghost" id="signUp"><a href="{% url 'accounts:register'%}">Sign Up</a></button>
+      </div>
     </div>
-    <script type="text/javascript">
-    var form_fields = document.getElementsByTagName('input')
-    form_fields[1].placeholder='First Name';
-    // form_fields[2].placeholder='Last Name';
-    // form_fields[3].placeholder='Email';
-    form_fields[4].placeholder='Enter password';
-    form_fields[5].placeholder='Confirm Password';
-    form_fields[6].placeholder='Phone number';
-    form_fields[7].placeholder='Office address';
+  </div>
+
+</div>
+<script type="text/javascript">
+var form_fields = document.getElementsByTagName('input')
+form_fields[1].placeholder='First Name';
+// form_fields[2].placeholder='Last Name';
+// form_fields[3].placeholder='Email';
+form_fields[4].placeholder='Enter password';
+form_fields[5].placeholder='Confirm Password';
+form_fields[6].placeholder='Phone number';
+form_fields[7].placeholder='Office address';
 
 
-    for (var field in form_fields){
-      form_fields[field].className += ' form-control'
-    }
+for (var field in form_fields){
+  form_fields[field].className += ' form-control'
+}
 
-    </script>
-  </body>
+</script>
+</body>
 
-  <script src="{% static "js/sign.js"%}" charset="utf-8"></script>
+<script src="{% static "js/sign.js"%}" charset="utf-8"></script>
 
 </html>

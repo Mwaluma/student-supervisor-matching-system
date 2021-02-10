@@ -1,3 +1,5 @@
+from rake_nltk import Rake
+
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -193,15 +195,18 @@ def delete_something(request):
 def home(request):
     return render(request, 'student.html')
 
-# def find_match(request):
-#     if request.method == 'POST':
-#         #Get form details
-#         text= request.POST.get('mytextarea')
-# 
-#         #Extract keywords
-#         r= Rake()
-#         r.extract_keywords_from_text(+)
-#
-#         return HttpResponse('Executed')
-#     else:
-#         return HttpResponse('POST DIDNT EXECUTE')
+def find_match(request):
+    if request.method == 'POST':
+        #Get form details
+        text= request.POST.get('mytextarea')
+
+        #Extract keywords
+        r= Rake()
+        r.extract_keywords_from_text(text)
+        keywords= r.get_ranked_phrases()
+        print(keywords)
+
+        return HttpResponse(keywords)
+    else:
+        return HttpResponse('POST DIDNT EXECUTE')
+    # return HttpResponse('I SEE YOU')

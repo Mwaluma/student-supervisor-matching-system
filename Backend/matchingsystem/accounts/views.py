@@ -1,5 +1,3 @@
-from rake_nltk import Rake
-
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -16,6 +14,10 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Lecturer, LecturerProfilePicture
 from extraction.forms import DocumentForm
+from extraction.packages.rake import Rake
+from extraction import models
+from extraction.packages.match import get_match, get_tfidf, rank_lecturers
+
 
 ##################################################################################
 
@@ -200,13 +202,33 @@ def find_match(request):
         #Get form details
         text= request.POST.get('mytextarea')
 
+        #lower case the words
+        text.lower()
+
         #Extract keywords
         r= Rake()
         r.extract_keywords_from_text(text)
         keywords= r.get_ranked_phrases()
-        print(keywords)
+        postings= get_match(keywords)
 
-        return HttpResponse(keywords)
+        #get total documents
+        total_documents= len(models.Document.objects.all())
+
+        #Get tfidf of each term
+        lecturer_rating= get_tfidf(postings, total_documents)
+
+        #Rank lecturers
+        lec_id= rank_lecturers(lecturer_rating)
+
+        #Get lecturer details
+        details= []
+        for lec in lec_id:
+            lecturer= Lecturer.objects.get(user=lec)
+            details.append(lecturer)
+
+        return HttpResponse(details)
+        #context= {'details': details}
+        #return render(request,)
     else:
         return HttpResponse('POST DIDNT EXECUTE')
     # return HttpResponse('I SEE YOU')

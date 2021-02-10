@@ -1,4 +1,4 @@
-archiv studi – sever read materi includ book|2,0.001241721854304636;3,0.3333
+archiv studi – sever read materi includ book|2,0.001241721854304636;4,0.7;8,0.8
 relev literatur relev literatur sever techniqu|2,0.002207505518763797
 schedul budget conclus refer rio|2,0.000827814569536424
 mohd khairul anuar mat udin|2,0.0011589403973509935

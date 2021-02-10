@@ -75,7 +75,7 @@ def upload_document(request):
             #main index
             main_index= defaultdict(list)
 
-            #upload index
+            #Load index in memory
             f=open("/".join([settings.MEDIA_DIR,'indexfile.txt']), 'r')
             for line in f:
                 line=line.rstrip()

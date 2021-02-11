@@ -2,6 +2,8 @@ import math
 from collections import defaultdict
 from matchingsystem import settings
 import string
+import codecs
+import sys
 
 def get_match(keywords):
     '''

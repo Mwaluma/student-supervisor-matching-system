@@ -17,7 +17,8 @@ from extraction.forms import DocumentForm
 from extraction.packages.rake import Rake
 from extraction import models
 from extraction.packages.match import get_match, get_tfidf, rank_lecturers
-
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 ##################################################################################
 
@@ -227,8 +228,31 @@ def find_match(request):
             details.append(lecturer)
 
         return HttpResponse(details)
+        # return redirect('accounts:results')
         #context= {'details': details}
         #return render(request,)
     else:
         return HttpResponse('POST DIDNT EXECUTE')
-    # return HttpResponse('I SEE YOU')
+
+
+
+def results(request):
+    return render(request, 'results.html')
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('accounts:dashboard')
+        else:
+            return redirect("accounts:change_password")
+
+    else:
+            form = PasswordChangeForm(user=request.user)
+            args = {'form': form}
+            return render(request, 'change_password.html', args)
+
+        # return HttpResponse('I SEE YOU')

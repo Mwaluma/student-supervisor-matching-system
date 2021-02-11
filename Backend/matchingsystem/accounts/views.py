@@ -241,10 +241,8 @@ def find_match(request):
 def results(request):
     return render(request, 'results.html')
 
-<<<<<<< HEAD
+
 @login_required(login_url='accounts:login')
-=======
->>>>>>> cae9e66805ef02aa92780e2a6aadf21173ef3c9c
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(data=request.POST, user=request.user)

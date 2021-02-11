@@ -54,7 +54,6 @@
     <h2>USER DETAILS</h2>
     <div class="card">
       <div class="card-body">
-<<<<<<< HEAD
         <br>
         {% if user_form or lecturer_form %}
         <form class="" action="{% url "accounts:update_profile" user.pk%}" method="post">
@@ -67,9 +66,7 @@
         </form>
 
         {% else %}
-=======
 
->>>>>>> cae9e66805ef02aa92780e2a6aadf21173ef3c9c
         <p>Here are your current details.<br>Click on update profile to change them</p>
         <br>
         <p>First Name:  {{user.first_name}}</p>
@@ -81,20 +78,8 @@
 
         <button type="button" name="button"> <a href="{% url "accounts:update_profile" request.user.id %}">Update profile</a></button>
 
-<<<<<<< HEAD
-=======
-        <br>
-        {% if user_form or lecturer_form %}
-        <form class="" action="{% url "accounts:update_profile" user.pk%}" method="post">
-          {% csrf_token %}
-          {{user_form.as_p}}
-          {{lecturer_form.as_p}}
-          {{ field.errors }}
-          <br>
-          <input type="submit" name="" value="Save">
-        </form>
->>>>>>> cae9e66805ef02aa92780e2a6aadf21173ef3c9c
         {% endif %}
+
 
       </div>
     </div>
@@ -103,11 +88,9 @@
     <div class="card">
       <div class="card-body">
         {% for message in messages %}
-<<<<<<< HEAD
+
           {{message}}
-=======
-        message
->>>>>>> cae9e66805ef02aa92780e2a6aadf21173ef3c9c
+
         {% endfor %}
         <form action="{% url 'extraction:upload' %}" method="post" enctype="multipart/form-data" >
           {% csrf_token %}

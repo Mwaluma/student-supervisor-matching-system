@@ -2,6 +2,8 @@ import math
 from collections import defaultdict
 from matchingsystem import settings
 import string
+import codecs
+import sys
 
 def get_match(keywords):
     '''
@@ -9,7 +11,7 @@ def get_match(keywords):
     '''
     #Load index
     main_index= defaultdict(list)
-    f=open("/".join([settings.MEDIA_DIR,'indexfile.txt']), 'r')
+    f=open("/".join([settings.MEDIA_DIR,'indexfile.txt']), 'r', encoding="utf-8")
     for line in f:
         line=line.rstrip()
         term,documents= line.split('|')

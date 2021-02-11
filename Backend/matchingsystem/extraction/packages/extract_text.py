@@ -14,7 +14,7 @@ def extract_text_from_document(url):
         text= ""
 
         #Extract content from pdf
-        pdfFileObject= open('', 'rb')
+        pdfFileObject= open(url, 'rb')
         pdfReaderObject= PyPDF2.PdfFileReader(pdfFileObject)
 
         #Loop through each page

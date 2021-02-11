@@ -10,6 +10,10 @@ body {
     overflow: hidden;
 }
 
+p {
+  font-size: 16px;
+}
+
 /* NavbarTop */
 .navbar-top {
     background-color: #f6f5f7;
@@ -135,4 +139,18 @@ body {
     position: absolute;
     color: #e7e7e8;
     right: 14%;
+}
+
+
+input[type=submit], button{
+  border-radius: 20px;
+	border: 1px solid #228B22;
+	/* background-color: #228B22; */
+	color:  #000000;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
 }

@@ -11,6 +11,7 @@ from extraction.packages.extract_text import extract_text_from_document
 from extraction.packages.rake import Rake
 from extraction.packages.extract_text import extract_tf
 from collections import Counter, defaultdict
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def upload(request):
@@ -26,6 +27,7 @@ def upload(request):
     return render(request, 'upload.html', context)
 
 @csrf_exempt
+@login_required(login_url='accounts:login')
 def upload_document(request):
     '''
         Uploads documents
@@ -35,7 +37,6 @@ def upload_document(request):
 
         #Obtain the file sent
         form = DocumentForm(request.POST, request.FILES)
-        print(settings.MEDIA_DIR)
 
         #Document load
 
@@ -48,7 +49,7 @@ def upload_document(request):
             user= request.user
             form.author= Lecturer.objects.get(user=user)
             form.save()
-            messages.success(request, 'File has been uploaded successfuly')
+            messages.success(request, f'{request.FILES["doc"].name} has been uploaded successfuly')
 
 
             #Get the url
@@ -62,7 +63,7 @@ def upload_document(request):
             r.extract_keywords_from_text(text)
 
             keywords= r.get_ranked_phrases()
-            print(keywords)
+
             #Get keywords as a dictionary {'keyword': tf}
             keywords= extract_tf(keywords,text)
 
@@ -74,9 +75,10 @@ def upload_document(request):
 
             #main index
             main_index= defaultdict(list)
+            print(main_index)
 
             #Load index in memory
-            f=open("/".join([settings.MEDIA_DIR,'indexfile.txt']), 'r')
+            f=open("/".join([settings.MEDIA_DIR,'indexfile.txt']), 'r', encoding="utf-8")
             for line in f:
                 line=line.rstrip()
                 term,documents= line.split('|')
@@ -88,7 +90,6 @@ def upload_document(request):
 
             f.close()
 
-            #print(main_index)
 
 
             #Append keyword to main index
@@ -96,7 +97,7 @@ def upload_document(request):
                 main_index[term].append(value)
 
             #Write to txt
-            f=open("/".join([settings.MEDIA_DIR,'indexfile.txt']), 'w')
+            f=open("/".join([settings.MEDIA_DIR,'indexfile.txt']), 'w', encoding="utf-8")
             for term,value in main_index.items():
                 postinglist=[]
 
@@ -108,7 +109,6 @@ def upload_document(request):
                 string= ''.join((term,'|',';'.join(postinglist)))
 
                 #write to file
-
                 f.write(f"{string}\n")
 
             f.close()

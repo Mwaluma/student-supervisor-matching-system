@@ -17,7 +17,8 @@ from extraction.forms import DocumentForm
 from extraction.packages.rake import Rake
 from extraction import models
 from extraction.packages.match import get_match, get_tfidf, rank_lecturers
-
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 ##################################################################################
 
@@ -25,7 +26,6 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import CreateUserForm
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 
 def registerPage(request):
     if request.user.is_authenticated:
@@ -82,6 +82,7 @@ def user_login(request):
     context= {}
     return render(request, 'registration/login.html', context)
 
+@login_required(login_url='accounts:login')
 def logoutUser(request):
     logout(request)
     return redirect('accounts:login')
@@ -153,6 +154,7 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
+@login_required(login_url='accounts:login')
 def dashboard(request):
     #Upload document form
     doc_form = DocumentForm()
@@ -160,6 +162,7 @@ def dashboard(request):
     return render(request, "dashboard.html", context)
 
 
+@login_required(login_url='accounts:login')
 def update_profile(request, pk):
     '''
         Updates Lecturer's details
@@ -227,8 +230,32 @@ def find_match(request):
             details.append(lecturer)
 
         return HttpResponse(details)
+        # return redirect('accounts:results')
         #context= {'details': details}
         #return render(request,)
     else:
         return HttpResponse('POST DIDNT EXECUTE')
-    # return HttpResponse('I SEE YOU')
+
+
+
+def results(request):
+    return render(request, 'results.html')
+
+@login_required(login_url='accounts:login')
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('accounts:dashboard')
+        else:
+            return redirect("accounts:change_password")
+
+    else:
+            form = PasswordChangeForm(user=request.user)
+            args = {'form': form}
+            return render(request, 'change_password.html', args)
+
+        # return HttpResponse('I SEE YOU')

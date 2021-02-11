@@ -8,20 +8,25 @@
   <link rel="stylesheet" href="{% static 'css/student.css'%}">
 </head>
 <body>
+
   <h2>Student-Supervisor Matching System</h2>
   <div class="container">
-    <p>Find the best supervisor for your project and/or area <br>of interest with the Student-Supervisor Matching System.</p>
+    <p>Welcome to SSMS! <br> We aim to help students find the best lecturer for their project </p>
+    <!-- <p>Find the best supervisor for your project and/or area <br>of interest with the Student-Supervisor Matching System.</p> -->
+
+    <br>
     <div class="textarea">
       <form action="{% url 'accounts:find_match'%}" method='POST'>
         {% csrf_token %}
         <textarea name="mytextarea" id="txt" cols="20" rows="5" placeholder="Type here any keywords that describe your project..."></textarea>
         <p>Or upload your proposal here (in .txt format)</p>
-        <input type="file" id="myFile" name="filename">
+        <input type="file" id="myFile" name="filename" accept=".txt">
         <input type="submit" name="getMatch" value="MATCH">
       </form>
     </div>
-    <!-- <button type="button" name="getMatch" onclick=" url 'accounts:find_match' ">Find Match</button> -->
-    <!-- <button type="button" name="getMatch" >MATCH</button> -->
+    <br>
+      <a href="{% url 'accounts:login'%}">Are you a lecturer? Log In</a>
+
   </div>
   <script src="{% static 'js/student.js'%}" charset="utf-8"></script>
 </body>

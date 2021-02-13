@@ -14,19 +14,7 @@ from collections import Counter, defaultdict
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-def upload(request):
-    context= {}
-    if request.method== 'POST':
-        uploaded_file= request.FILES["document"]
 
-        #Save file
-        fs= FileSystemStorage()
-        name= fs.save(uploaded_file.name, uploaded_file)
-        context['url']= fs.url(name)
-
-    return render(request, 'upload.html', context)
-
-@csrf_exempt
 @login_required(login_url='accounts:login')
 def upload_document(request):
     '''
@@ -75,7 +63,6 @@ def upload_document(request):
 
             #main index
             main_index= defaultdict(list)
-            print(main_index)
 
             #Load index in memory
             f=open("/".join([settings.MEDIA_DIR,'indexfile.txt']), 'r', encoding="utf-8")
@@ -114,9 +101,3 @@ def upload_document(request):
             f.close()
 
             return redirect("accounts:dashboard")
-        #return HttpResponse("Post executing")
-    # else:
-    #     form = DocumentForm()
-    #     return render(request, 'upload_document.html', {
-    #     'form': form
-    # })

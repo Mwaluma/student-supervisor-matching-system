@@ -94,6 +94,7 @@ def extract_tf(keywords, text):
             #Its a phrase
             #Split the words and find the term frequency
             words_split= keyword.split()
+            
             #Check for each word
             for word in words_split:
                 #remove punctuation marks

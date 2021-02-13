@@ -25,8 +25,6 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CreateUserForm
 
-from django.contrib.auth import authenticate, login, logout
-
 def registerPage(request):
     if request.user.is_authenticated:
         return redirect('accounts/dashboard')
@@ -103,8 +101,6 @@ def lecturer_register(request):
             user.username= user.email
             user.is_active= True
             user.save()
-            #user.set_password(user.password)
-            #user.save()
 
             lecturer= lecturer_form.save(commit=False)
             lecturer.user = user
@@ -114,24 +110,7 @@ def lecturer_register(request):
             profile.lecturer= lecturer
             profile.save()
 
-            #user= user_form.cleaned_data.get('username')
-            #print(user)
             messages.success(request, 'Account was created for ' + user.username)
-
-
-            # current_site = get_current_site(request)
-            # mail_subject = 'Activate your account.'
-            # message = render_to_string('registration/acc_activate_email.html', {
-            #     'user': user,
-            #     'domain': current_site.domain,
-            #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            #     'token': default_token_generator.make_token(user),
-            # })
-            # to_email = form.cleaned_data.get('email')
-            # email = EmailMessage(
-            #     mail_subject, message, to=[to_email]
-            # )
-            # email.send()
             return redirect('accounts:login')
 
     #Create forms to be rendered
@@ -229,12 +208,8 @@ def find_match(request):
             lecturer= Lecturer.objects.get(user=lec)
             details.append(lecturer)
 
-        return HttpResponse(details)
-        # return redirect('accounts:results')
-        #context= {'details': details}
-        #return render(request,)
-    else:
-        return HttpResponse('POST DIDNT EXECUTE')
+
+        return render(request, 'dump.html', context= {'details': details})
 
 
 

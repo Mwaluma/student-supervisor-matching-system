@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SS Matching System</title>
+  <link rel="stylesheet" href="{% static 'css/dash.css'%}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+</head>
+<body>
+
+
+
+  <!-- Main -->
+  <div class="main">
+    <h2>Your Best Match!</h2>
+    {% if details %}
+      <!-- create card for lecturer -->
+      {% for lecturer in details%}
+      <div class="card">
+        <div class="card-body">
+              <p>Name: {{lecturer.user.first_name}} {{lecturer.user.last_name}}</p>
+              <p>Email: {{lecturer.user.email}}</p>
+              <p>Phone number: {{lecturer.phone_number}}</p>
+              <p>Office address: {{lecturer.office_address}}</p>
+        </div>
+      </div>
+
+        <!-- <p>Email: {{lecturer.}}</p> -->
+      {% endfor %}
+
+
+    {% else %}
+    <div class="card">
+      <div class="card-body">
+            <p>Did not find match. Please provide more details about your project </p>
+      </div>
+    </div>
+
+    {% endif %}
+
+    <button type="button" name="back"> <a href="{% url 'accounts:home'%}">Go back</a> </button>
+  </div>
+  <!-- End -->
+</body>
+</html>
+
+
+<!--
+Hello, {{ user.username|default:'Guest' }}!
+
+<button type="button" name="button"><a href="{% url "accounts:update_profile" request.user.id %}">Update profile</a></button> -->

@@ -22,6 +22,7 @@ def get_match(keywords):
             main_index[term].append(postings)
 
     f.close()
+    print(main_index)
 
     #Match keywords
     matching_lecturers=[]
@@ -87,6 +88,8 @@ def rank_lecturers(postings):
     #Add total score
     for posting in postings:
         lecturer_score[posting[0]] += posting[1]
+
+    print(lecturer_score)
 
     #Arrange in descending order
     lec_ids= sorted(lecturer_score, key=lecturer_score.get, reverse=True)

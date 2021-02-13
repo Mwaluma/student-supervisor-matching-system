@@ -9,11 +9,47 @@
 </head>
 <body>
   <h2>Student-Supervisor Matching System</h2>
-  <div class="container">
-    <p>Find the best supervisor for your project and/or area <br>of interest with the Student-Supervisor Matching System.</p>
+  <div class="main">
+    <h2>USER DETAILS</h2>
+    <div class="card">
+      <div class="card-body">
+        <br>
+        {% if user_form or lecturer_form %}
+        <form class="" action="{% url "accounts:update_profile" user.pk%}" method="post">
+          {% csrf_token %}
+          {{user_form.as_p}}
+          {{lecturer_form.as_p}}
+          {{ field.errors }}
+          <br>
+          <input type="submit" name="" value="Save">
+        </form>
 
-    <!-- <button type="button" name="getMatch" onclick=" url 'accounts:find_match' ">Find Match</button> -->
-    <!-- <button type="button" name="getMatch" >MATCH</button> -->
+        {% else %}
+
+        <p>Here are your current details.<br>Click on update profile to change them</p>
+        <br>
+        <p>First Name:  {{user.first_name}}</p>
+        <p>Last Name:  {{user.last_name}}</p>
+        <p>Email:  {{user.email}}</p>
+        <p>Phone number:  {{user.lecturer.phone_number}}</p>
+        <p>Office address:  {{user.lecturer.office_address}}</p>
+        <br>
+
+        <button type="button" name="button"> <a href="{% url "accounts:update_profile" request.user.id %}">Update profile</a></button>
+
+        {% endif %}
+
+
+      </div>
+    </div>
+
+    <h2>UPLOAD DOCUMENTS</h2>
+    <div class="card">
+      <p>ytterrtdfdr</p>
+      <div class="card-body">
+        <p>hrewqas</p>
+      </div>
+    </div>
   </div>
 </body>
 </html>
